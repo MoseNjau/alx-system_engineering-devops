@@ -1,23 +1,40 @@
 #!/usr/bin/env bash
 #a script
 # variables & parameters
-subdomains=( "www" "lb-01" "web-01" "web-02" )
-domain="$1"
-sub="$2"
+#!/bin/bash
 
-dig_cmd () {
-	# func variables
-	sub="$2"
-	INFO="$(dig "$sub.$domain" | grep -A1 'ANSWER SECTION:' | awk 'NR==2')"
-	IP=$(echo "$INFO" | awk '{print $5}')
-	RECORD=$(echo "$INFO" | awk '{print $4}')
-	echo -e "The subdomain $sub is a $RECORD record and points to $IP"
+# Function to display information about a subdomain
+display_info() {
+    sub_domain=$1
+    domain=$2
+    ip=$(dig +short $sub_domain.$domain | awk '/^([0-9]{1,3}\.){3}[0-9]{1,3}$/')
+
+    if [ -z "$ip" ]; then
+        echo "The subdomain $sub_domain does not have an A record"
+    else
+        echo "The subdomain $sub_domain is a A record and points to $ip"
+    fi
 }
 
-if [ $# -eq 1 ]; then
-	for subs in "${subdomains[@]}"; do
-		dig_cmd "$domain" "$subs"
-	done
-elif [ $# -eq 2 ]; then
-	dig_cmd "$domain" "$sub"
+# Main function
+main() {
+    domain=$1
+    sub_domain=$2
+
+    if [ -z "$sub_domain" ]; then
+        display_info www $domain
+        display_info lb-01 $domain
+        display_info web-01 $domain
+        display_info web-02 $domain
+    else
+        display_info $sub_domain $domain
+    fi
+}
+
+# Check if domain argument is provided
+if [ -z "$1" ]; then
+    echo "Error: Domain argument is missing"
+    exit 1
 fi
+
+main "$@"
