@@ -1,47 +1,16 @@
 #!/usr/bin/env bash
-# Conigures a server
-sudo apt update
-sudo apt install nginx
-# allowing nginx on firewall
-sudo ufw allow 'Nginx HTTP'
-# Give the user ownership to website files for easy editing
-if [ -d "/var/www" ]; then
-	sudo chown -R "$USER":"$USER" /var/www
-	sudo chmod -R 755 /var/www
-else
-	sudo mkdir -p /var/www
-	sudo chown -R "$USER":"$USER" /var/www
-	sudo chmod -R 755 /var/www
-fi
-# create directories if not present
-for dir in /var/www/{html,error}; do
-	if ! [ -d "$dir" ]; then
-		mkdir -p "$dir"
-	fi
-done
-# creating new index
-echo "Hello World!" > /var/www/html/index.html
-# backup default server config file
-sudo cp /etc/nginx/sites-enabled/default nginx-sites-enabled_default.backup
-
-server_config=\
-"server {
-		listen 80 default_server;
-		listen [::]:80 default_server;
-		root /var/www/html;
-		index index.html index.htm index.nginx-debian.html
-		server_name_;
-		add_header X-Served-By \$hostname;
-		location / {
-			try_files \$uri \$uri/ =404;
-		}
-		if (\$request_filename ~ redirect_me){
-			rewrite ^https://www.youtube.com/ permanent;
-		}
-		error_page 404 /error_404.html;
-		location = /error_404.html {
-			internal;
-		}
-}"
-
+# Double the number of webservers.
+sudo apt-get update
+sudo apt-get -y install nginx
+sudo chown $USER:$USER /var/www/html/index.html
+sudo touch index.html /var/www/html/
+echo 'Holberton School' > /var/www/html/index.html
+sudo mkdir /var/www/error
+sudo chown  $USER:$USER /var/www/error/
+echo "Ceci n'est pas une page" > /var/www/error/404.html
+sudo chown  $USER:$USER /etc/nginx/sites-available/
+sed -i '/server_name _/a location /redirect_me { rewrite ^ https://www.youtube.com/watch?v=QH2-TGUlw\u4? permanent; }' /etc/nginx/sites-available/default
+sed -i '/server_name _/a error_page 404 /404.html; location = /404.html {root /var/www/error/; internal; }' /etc/nginx/sites-available/default
+# in the server 1 also 2 this down
+sudo sed -i "/server_name _/a add_header X-Served-By $HOSTNAME;" /etc/nginx/sites-available/default
 sudo service nginx restart
