@@ -1,34 +1,35 @@
-# Project Outage Postmortem
+# Project Outage Postmortem: The Day We Took Down the Internet (Almost)
+
+![Oops](https://media.giphy.com/media/3oEduV4SOS9mmmIOkw/giphy.gif)
 
 ## Overview
-This document provides a postmortem analysis of an outage that occurred during the release of ALX's System Engineering & DevOps project 0x19. The outage affected an isolated Ubuntu 14.04 container running an Apache web server, resulting in 500 Internal Server Errors for GET requests instead of the expected response, which was an HTML file defining a simple Holberton WordPress site.
+Welcome to the rollercoaster ride of our latest project release! Buckle up as we navigate through the highs and lows of a wild outage adventure that almost brought the internet to its knees.
 
 ## Issue Summary
-- **Duration:** The outage occurred upon the release of the project at approximately 06:00 West African Time (WAT) and was resolved approximately 13 hours later at 19:20 Pacific Standard Time (PST).
-- **Impact:** GET requests on the server led to 500 Internal Server Errors, affecting the availability of the WordPress site.
-- **Root Cause:** The root cause of the outage was identified as a typo in the WordPress application code, specifically referencing an erroneous file extension ".phpp" instead of ".php".
+- **Duration:** From the crack of dawn till the twilight hours, this outage kept us on our toes for a whopping 13 hours!
+- **Impact:** Picture this: users clicking frantically, servers sweating profusely, and a chorus of 500 Internal Server Errors echoing in cyberspace. It was chaos, to say the least!
+- **Root Cause:** Brace yourselves... a single typo in our WordPress application code turned the web server into a comedy of errors. Who knew one missing letter could cause such havoc?
 
 ## Timeline
-- **06:00 WAT:** Outage detected upon project release.
-- **19:20 PST:** Bug debugger (BDB) Brennan encounters the issue and begins debugging.
-- **19:25 PST:** Checked running processes and examined Apache configuration.
-- **19:30 PST:** Ran strace on Apache processes and identified the erroneous file extension.
-- **19:45 PST:** Located and corrected the typo in the WordPress application code.
-- **19:50 PST:** Tested server response and confirmed resolution.
-- **19:55 PST:** Wrote a Puppet manifest to automate fixing similar errors in the future.
+- **06:00 WAT:** The sun rises, and so does our project... along with an unexpected error message.
+- **19:20 PST:** Bug debugger Brennan (a.k.a. BDB) enters the scene, armed with determination and a trusty magnifying glass.
+- **19:25 PST:** The hunt begins! Brennan sifts through processes, config files, and more, determined to crack the case.
+- **19:30 PST:** Enter the strace! With a flick of the wrist (and a command in the terminal), our hero uncovers the elusive typo.
+- **19:45 PST:** Victory is near! Brennan corrects the typo, unleashing a sigh of relief across the digital realm.
+- **19:50 PST:** Testing, testing... 1, 2, 3! The server responds, and peace is restored to the kingdom of cyberspace.
+- **19:55 PST:** With a flourish, Brennan scripts a Puppet manifest to ensure the typo never dares to resurface again.
 
 ## Root Cause and Resolution
-The root cause of the outage was a typo in the WordPress application code, specifically referencing an erroneous file extension ".phpp" instead of ".php". The issue was resolved by manually correcting the typo in the WordPress application code. Additionally, a Puppet manifest was created to automate the detection and correction of similar errors in the future.
+In a twist of fate, a simple typo ("phpp" instead of "php") in our WordPress application code triggered the domino effect that led to the outage. Brennan swiftly corrected the error, restoring order to the digital universe. As a failsafe, a Puppet manifest was crafted to fend off any future typos attempting to wreak havoc.
 
 ## Corrective and Preventative Measures
-To prevent similar outages in the future, the following measures are recommended:
-1. **Testing:** Implement thorough testing procedures for the application before deployment to catch errors like typos early in the development process.
-2. **Status Monitoring:** Enable uptime-monitoring services such as UptimeRobot to promptly alert administrators of any website outages.
-3. **Automation:** Use automation tools like Puppet to automate error detection and correction processes, reducing the likelihood of similar issues occurring in the future.
+To safeguard against future outages and keep the internet running smoothly, we've cooked up a recipe for success:
+1. **Test, Test, Test:** Thorough testing procedures will be our shield against typos and other pesky bugs lurking in the shadows.
+2. **Keep Watch:** Uptime-monitoring services like UptimeRobot will be our ever-vigilant sentinels, alerting us at the first sign of trouble.
+3. **Automate to Liberate:** Automation tools like Puppet will be our trusty sidekicks, standing ready to swoop in and save the day at a moment's notice.
 
-By implementing these measures, we aim to minimize the risk of similar outages and ensure the stability and reliability of our web server and applications.
+## Conclusion
+And so, dear reader, our tale comes to a close. Though fraught with challenges, this outage served as a valuable lesson in resilience, resourcefulness, and the power of a well-placed semicolon. As we bid farewell to the chaos of today, we look forward to a brighter, typo-free future in the vast expanse of cyberspace.
 
----
-
-This document was generated based on a postmortem analysis of the outage. For further information or inquiries, please contact the project team.
+But hey, where's the fun in perfection? After all, it's the bumps in the road that make the journey memorable. Until next time, keep coding, keep laughing, and never underestimate the power of a single keystroke!
 
